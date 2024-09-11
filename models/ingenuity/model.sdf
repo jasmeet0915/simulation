@@ -1,0 +1,378 @@
+<?xml version='1.0' encoding='utf-8'?>
+<sdf version="1.6">
+  <model name="ingenuity">
+
+	<link name="base_link"> </link>
+
+    <link name="mainbody">
+        <inertial>
+            <mass>2</mass>
+            <inertia>
+                <ixx>1.5</ixx>
+                <iyy>1.5</iyy>
+                <izz>1.5</izz>
+            </inertia>
+        </inertial>
+        <visual name="visual">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/mainbody_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/mainbody_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+        <sensor name="camera" type="camera">
+            <pose relative_to="body_link">0 0 0.2 0 -1.57 0</pose>
+            <camera>
+            <horizontal_fov>1.05</horizontal_fov>
+            <image>
+                <width>256</width>
+                <height>256</height>
+            </image>
+            <clip>
+                <near>0.1</near>
+                <far>100</far>
+            </clip>
+            </camera>
+            <update_rate>30</update_rate>
+            <topic>nasa_ingenuity/camera</topic>
+        </sensor>
+        <sensor name="depth_camera" type="depth_camera">
+            <pose relative_to="body_link">0 0 0.2 0 -1.57 0</pose>
+            <camera>
+            <horizontal_fov>1.05</horizontal_fov>
+            <image>
+                <width>256</width>
+                <height>256</height>
+                <format>R_FLOAT32</format>
+            </image>
+            <clip>
+                <near>0.1</near>
+                <far>100</far>
+            </clip>
+            </camera>
+            <update_rate>30</update_rate>
+            <topic>nasa_ingenuity/depth_camera</topic>
+        </sensor>
+    </link>
+
+    <link name="plate1"> </link>
+    <link name="plate2"> </link>
+
+    <link name="topblade">
+        <visual name="visual">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/topblade_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/topblade_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="bottomblade">
+        <visual name="visual">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/bottomblade_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/bottomblade_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="leg2_axis"> </link>
+
+    <link name="leg2">
+        <visual name="visual">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg2_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg2_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="leg1_axis"> </link>
+
+    <link name="leg1">
+        <visual name="visual">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg1_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg1_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="leg3_axis"> </link>
+
+    <link name="leg3">
+        <visual name="visual">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg3_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg3_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+    <link name="leg4_axis"> </link>
+
+    <link name="leg4">
+        <visual name="visual">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg4_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </visual>
+        <collision name="collision">
+            <geometry>
+                <mesh>
+                    <uri>model://ingenuity/meshes/leg4_joint.glb</uri>
+                </mesh>
+            </geometry>
+        </collision>
+    </link>
+
+	<link name="navcam"> </link>
+
+    <joint name="mainbody_joint" type="fixed">
+        <parent>base_link</parent>
+        <child>mainbody</child>
+    </joint>
+    
+    <joint name="topblade_joint" type="fixed">
+        <parent>bottomblade</parent>
+        <child>topblade</child>
+        <axis>
+            <xyz>0 0 -1</xyz>
+            <limit>
+                <lower>-1e+16</lower>
+                <upper>1e+16</upper>
+            </limit>
+            <dynamics>
+                <damping>0.1</damping>
+                <friction>0.1</friction>
+            </dynamics>
+            <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+    </joint>
+    
+    <joint name="bottomblade_joint" type="revolute">
+        <pose>0 0 0 0 0 0.994839</pose>
+        <parent>plate2</parent>
+        <child>bottomblade</child>
+        <axis>
+            <xyz>0 0 -1</xyz>
+            <limit>
+                <lower>-1e+16</lower>
+                <upper>1e+16</upper>
+            </limit>
+            <dynamics>
+                <damping>0.1</damping>
+                <friction>0.1</friction>
+            </dynamics>
+            <use_parent_model_frame>1</use_parent_model_frame>
+        </axis>
+    </joint>
+
+    <joint name="plate1_joint" type="revolute">
+        <parent>mainbody</parent>
+        <child>plate1</child>
+        <axis>
+            <xyz>0 1 0</xyz>
+            <limit>
+                <lower>-0.3</lower>
+                <upper>0.3</upper>
+            </limit>
+             <dynamics>
+                <damping>0.1</damping>
+                <friction>0.6</friction>
+            </dynamics>
+        </axis>
+    </joint>
+
+    <joint name="plate2_joint" type="revolute">
+        <parent>plate1</parent>
+        <child>plate2</child>
+        <axis>
+            <xyz>1 0 0</xyz>
+            <limit>
+                <lower>-0.3</lower>
+                <upper>0.3</upper>
+            </limit>
+             <dynamics>
+                <damping>0.1</damping>
+                <friction>0.6</friction>
+            </dynamics>
+        </axis>
+    </joint>
+
+    <link name="dust_link">
+        <pose> 0 0 0 0 1.56 0</pose>
+        <inertial>
+          <mass>0.005</mass>
+          <inertia>
+            <ixx>9.75e-07</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>4.17041e-05</iyy>
+            <iyz>0</iyz>
+            <izz>4.26041e-05</izz>
+          </inertia>
+        </inertial>
+        <particle_emitter name="emitter" type="box">
+          <emitting>true</emitting>
+          <topic>/drone_dust</topic>
+          <size>0.7 0.7 0.07</size>
+          <particle_size>0.1 0.1 0.1</particle_size>
+          <lifetime>2</lifetime>
+          <min_velocity>0.2</min_velocity>
+          <max_velocity>0.2</max_velocity>
+          <scale_rate>2</scale_rate>
+          <rate>0</rate>
+          <material>
+            <diffuse>1 1 1</diffuse>
+            <specular>1.0 1.0 1.0</specular>
+            <pbr>
+              <metal>
+                <albedo_map>model://ingenuity/materials/textures/dust.png</albedo_map>
+              </metal>
+            </pbr>
+          </material>
+        </particle_emitter>
+      </link>
+  
+      <joint name='dust_joint' type='fixed'>
+        <parent>base_link</parent>
+        <child>dust_link</child>
+      </joint>
+    
+    <joint name="leg2_axis_joint" type="fixed">
+        <pose>0.0799965 0.0899998 0.013566 0.0338305 0.721918 0.0511692</pose>
+        <parent>mainbody</parent>
+        <child>leg2_axis</child>
+    </joint>
+    
+    <joint name="leg2_joint" type="fixed">
+        <pose>0.0544521 0.0879744 0.0630787 1.11631e09 0.722567 0.0383972</pose>
+        <parent>leg2_axis</parent>
+        <child>leg2</child>
+    </joint>
+    
+    <joint name="leg1_axis_joint" type="fixed">
+        <pose>0.0804546 0.0897671 0.013368 0.180504 0.364465 0.473174</pose>
+        <parent>mainbody</parent>
+        <child>leg1_axis</child>
+    </joint>
+    
+    <joint name="leg1_joint" type="fixed">
+        <pose>0.0239246 0.110467 0.0439815 -5.70219e08 0.404917 0.439824</pose>
+        <parent>leg1_axis</parent>
+        <child>leg1</child>
+    </joint>
+    
+    <joint name="leg3_axis_joint" type="fixed">
+        <pose>0.0799965 0.0899998 0.013566 0.0338306 0.721918 0.0511692</pose>
+        <parent>mainbody</parent>
+        <child>leg3_axis</child>
+    </joint>
+    
+    <joint name="leg3_joint" type="fixed">
+        <pose>0.0544521 0.0879744 0.0630787 9.26579e09 0.722567 0.0383972</pose>
+        <parent>leg3_axis</parent>
+        <child>leg3</child>
+    </joint>
+    
+    <joint name="leg4_axis_joint" type="fixed">
+        <pose>0.0804546 0.0898284 0.013315 6.77871e07 0.460765 0.364774</pose>
+        <parent>mainbody</parent>
+        <child>leg4_axis</child>
+    </joint>
+    
+    <joint name="leg4_joint" type="fixed">
+        <pose>0.032699 0.112619 0.0310971 0.175269 0.428359 0.402991</pose>
+        <parent>leg4_axis</parent>
+        <child>leg4</child>
+    </joint>
+    
+    <joint name="navcam_joint" type="fixed">
+        <pose>0.0 0.0616891 0.13743 0.0027478 0.0580433 -1.57391594</pose>
+        <parent>mainbody</parent>
+        <child>navcam</child>
+    </joint>
+
+    <plugin name='gz::sim::systems::Thruster' filename='gz-sim-thruster-system'>
+        <namespace>ingenuity</namespace>
+        <joint_name>bottomblade_joint</joint_name>
+        <thrust_coefficient>0.004422</thrust_coefficient>
+        <fluid_density>1000</fluid_density>
+        <propeller_diameter>0.2</propeller_diameter>
+    </plugin>
+
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+			<joint_name>plate1_joint</joint_name>
+            <p_gain>5.0</p_gain>
+            <i_gain>0.1</i_gain>
+            <d_gain>0.01</d_gain> 
+            <position_tolerance>0.01</position_tolerance>
+            <velocity_limit>1.0</velocity_limit>
+            <topic>plate1_joint/cmd_pos</topic>
+    </plugin>
+
+    <plugin filename="gz-sim-joint-position-controller-system" name="gz::sim::systems::JointPositionController">
+			<joint_name>plate2_joint</joint_name>
+            <p_gain>5.0</p_gain>
+            <i_gain>0.1</i_gain>
+            <d_gain>0.01</d_gain> 
+            <position_tolerance>0.01</position_tolerance>
+            <velocity_limit>1.0</velocity_limit>
+            <topic>plate2_joint/cmd_pos</topic>
+    </plugin>
+
+
+    <plugin name='gz::sim::systems::ParticleEmitter2' filename='gz-sim-particle-emitter2-system'/>
+
+	</model>
+</sdf>

@@ -1,0 +1,189 @@
+<sdf version="1.5">
+  <model name="buggy_model">
+
+    <pose>0 0 0 0 0 0</pose>
+    <static>false</static>
+
+    <!-- Main body of the buggy -->
+    <link name="chassis">
+      <!-- <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://buggy_model/meshes/MMSEV.obj</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </collision> -->
+
+      <visual name="visual">
+        <cast_shadows>true</cast_shadows>
+        <geometry>
+          <mesh>
+            <uri>model://buggy_model/meshes/MMSEV.obj</uri>
+            <scale>1 1 1</scale>
+          </mesh>
+        </geometry>
+      </visual>
+    </link>
+
+    <!-- Front Left Wheel -->
+    <link name="front_left_wheel">
+      <pose>-1.5 -1.87 0.8 0 1.6 0</pose> <!-- Adjust the position to match wheel location -->
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.4</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Front Right Wheel -->
+    <link name="front_right_wheel">
+      <pose>1.5 -1.87 0.8 0 1.6 0</pose> <!-- Adjust the position to match wheel location -->
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.4</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Rear Left Wheel (Powered) -->
+    <link name="rear_left_wheel">
+      <pose>-1.5 -1.87 -2.6 0 1.6 0</pose> <!-- Adjust the position to match wheel location -->
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.4</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Rear Right Wheel (Powered) -->
+    <link name="rear_right_wheel">
+      <pose>1.5 -1.87 -2.6 0 1.6 0</pose> <!-- Adjust the position to match wheel location -->
+      <collision name="collision">
+        <geometry>
+          <cylinder>
+            <radius>0.4</radius>
+            <length>0.1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+    </link>
+
+    <!-- Joints to attach wheels to the chassis -->
+    <!-- Front Left Joint (Passive) -->
+    <joint name="front_left_wheel_joint" type="revolute">
+      <parent>chassis</parent>
+      <child>front_left_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz> <!-- Rotating around the Y-axis -->
+        <limit>
+          <lower>-1e16</lower>
+          <upper>1e16</upper>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- Front Right Joint (Passive) -->
+    <joint name="front_right_wheel_joint" type="revolute">
+      <parent>chassis</parent>
+      <child>front_right_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz> <!-- Rotating around the Y-axis -->
+        <limit>
+          <lower>-1e16</lower>
+          <upper>1e16</upper>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- Rear Left Joint (Powered) -->
+    <joint name="rear_left_wheel_joint" type="revolute">
+      <parent>chassis</parent>
+      <child>rear_left_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz> <!-- Rotating around the Y-axis -->
+        <limit>
+          <lower>-1e16</lower>
+          <upper>1e16</upper>
+        </limit>
+      </axis>
+    </joint>
+
+    <!-- Rear Right Joint (Powered) -->
+    <joint name="rear_right_wheel_joint" type="revolute">
+      <parent>chassis</parent>
+      <child>rear_right_wheel</child>
+      <axis>
+        <xyz>0 0 1</xyz> <!-- Rotating around the Y-axis -->
+        <limit>
+          <lower>-1e16</lower>
+          <upper>1e16</upper>
+        </limit>
+      </axis>
+    </joint>
+
+		<plugin filename="gz-sim-diff-drive-system"
+			name="gz::sim::systems::DiffDrive">
+			<right_joint>front_left_wheel_joint</right_joint>
+			<right_joint>rear_left_wheel_joint</right_joint>
+			<left_joint>front_right_wheel_joint</left_joint>
+			<left_joint>rear_right_wheel_joint</left_joint>
+			<wheel_separation>3.0</wheel_separation>
+			<wheel_radius>0.5</wheel_radius>
+			<max_linear_acceleration>10</max_linear_acceleration>
+			<min_linear_acceleration>-10</min_linear_acceleration>
+			<max_angular_acceleration>20</max_angular_acceleration>
+			<min_angular_acceleration>-20</min_angular_acceleration>
+			<max_linear_velocity>20</max_linear_velocity>
+			<min_linear_velocity>-20</min_linear_velocity>
+			<max_angular_velocity>10</max_angular_velocity>
+			<min_angular_velocity>-10</min_angular_velocity>
+			<topic>cmd_vel</topic>
+			<odom_publish_frequency>40</odom_publish_frequency>
+			<odom_topic>odom</odom_topic>
+			<tf_topic>tf</tf_topic>
+			<frame_id>odom</frame_id>
+			<child_frame_id>base_link</child_frame_id>
+		</plugin>
+
+    <link name="dust_link">
+      <particle_emitter name="emitter" type="box">
+        <pose>0 -2.5 0 0 1.56 1.56</pose>
+        <emitting>true</emitting>
+        <size>5 1 1</size>
+        <particle_size>0.1 0.1 0.1</particle_size>
+        <lifetime>2.4</lifetime>
+        <min_velocity>1.5</min_velocity>
+        <max_velocity>1.5</max_velocity>
+        <scale_rate>2</scale_rate>
+        <rate>0</rate>
+        <material>
+          <diffuse>1 1 1</diffuse>
+          <specular>1.0 1.0 1.0</specular>
+          <pbr>
+            <metal>
+              <albedo_map>model://buggy_model/materials/textures/dust.png</albedo_map>
+            </metal>
+          </pbr>
+        </material>
+        <color_range_image>model://buggy_model/materials/textures/fogcolors.png</color_range_image>
+      </particle_emitter>
+    </link>
+  
+    <joint name="dust_joint" type="fixed">
+      <parent>chassis</parent>
+      <child>dust_link</child>
+      <pose>0 0 0 0 0 0</pose>
+    </joint>
+
+  </model>
+</sdf>

@@ -165,7 +165,6 @@
     </sensor>
   </gazebo>
 
-
   <gazebo reference="camera_link">
       <sensor type="camera" name="camera_sensor">
           <visualize>1</visualize>
@@ -203,7 +202,7 @@
         <update_rate>15.0</update_rate>
         <topic>depth_raw</topic>
         <visualize>true</visualize> 
-        <camera name="realsense_depth_cam">
+        <camera name="depth_cam">
           <horizontal_fov>1.7633</horizontal_fov>
           <image>
             <width>1280</width>
